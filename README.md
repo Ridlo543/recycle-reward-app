@@ -18,16 +18,20 @@ git clone
 -   Masuk ke folder project
 
 ```bash
-cd recycle-reward-app
+cd project
 ```
 
--   Install composer
+-   Install composer dan npm
 
 ```bash
 composer install
 ```
 
--   Copy file .env.example menjadi .env
+```bash
+npm install
+```
+
+-   Jika belum ada .env Copy file .env.example menjadi .env
 
 ```bash
 cp .env.example .env
@@ -39,9 +43,7 @@ cp .env.example .env
 php artisan key:generate
 ```
 
--   Buat database baru di phpmyadmin
--   Setting database di file .env
--   Migrate database
+-   Buat database baru di phpmyadmin atau Migrate database
 
 ```bash
 php artisan migrate
