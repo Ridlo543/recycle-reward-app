@@ -2,6 +2,15 @@
 // app/Providers/Filament/AdminPanelProvider.php
 namespace App\Providers\Filament;
 
+use App\Filament\Admin\Pages\AdminDashboard;
+use App\Filament\Admin\Widgets\AccountWidget;
+use App\Filament\Admin\Widgets\UsersCountChart;
+use App\Filament\Admin\Resources\AdminResource;
+use App\Filament\Admin\Resources\PartnerResource;
+use App\Filament\Admin\Resources\RecyclingCenterResource;
+use App\Filament\Admin\Resources\UserResource;
+use App\Filament\Admin\Resources\WasteExchangeResource;
+use App\Filament\Admin\Resources\WasteTypeResource;
 use App\Http\Middleware\AdminMiddleware;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -18,6 +27,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Leandrocfe\FilamentApexCharts\FilamentApexChartsPlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -29,21 +39,26 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->profile()
+            ->sidebarCollapsibleOnDesktop()
             ->colors([
                 'primary' => Color::Green,
             ])
-            ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
-            ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
+            ->discoverResources(in: app_path('Filament/Admin/Resources'), for: 'App\\Filament\\Admin\\Resources')
+            ->discoverPages(in: app_path('Filament/Admin/Pages'), for: 'App\\Filament\\Admin\\Pages')
             ->pages([
-                Pages\Dashboard::class,
+                AdminDashboard::class,
             ])
-            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
+            ->discoverWidgets(in: app_path('Filament/Admin/Widgets'), for: 'App\\Filament\\Admin\\Widgets')
             ->widgets([
-                Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
+                AccountWidget::class,
+                UsersCountChart::class,
             ])
-            ->plugin(
-                \Hasnayeen\Themes\ThemesPlugin::make()
+            ->plugins(
+                [
+                    \Hasnayeen\Themes\ThemesPlugin::make(),
+                    FilamentApexChartsPlugin::make(),
+                ]
             )
             ->middleware([
                 \Hasnayeen\Themes\Http\Middleware\SetTheme::class,
@@ -57,12 +72,14 @@ class AdminPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
-            // ->authMiddleware([
-            //     Authenticate::class,
-            // ]);
-            // ->authMiddleware([
-            //     AdminMiddleware::class,
-            // ]);
             ->authGuard('admin');
     }
 }
+    
+                // Widgets\FilamentInfoWidget::class,
+    // ->authMiddleware([
+    //     Authenticate::class,
+    // ]);
+    // ->authMiddleware([
+    //     AdminMiddleware::class,
+    // ]);
