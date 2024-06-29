@@ -4,30 +4,26 @@ namespace Database\Factories;
 
 use App\Models\RecyclingCenter;
 use App\Models\User;
+use App\Models\WasteExchange;
 use App\Models\WasteType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\WasteExchange>
- */
 class WasteExchangeFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
+    protected $model = WasteExchange::class;
+
     public function definition()
     {
-        $wasteType = WasteType::inRandomOrder()->first();
-        $weight = $this->faker->numberBetween(100, 1000);
-
         return [
-            'user_id' => User::inRandomOrder()->first()->id,
-            'recycling_center_id' => RecyclingCenter::inRandomOrder()->first()->id,
-            'waste_type_id' => $wasteType->id,
-            'weight' => $weight,
-            'points' => $weight * $wasteType->price_per_gram,
+            'user_id' => User::factory(),
+            'recycling_center_id' => RecyclingCenter::factory(),
+            'waste_type_id' => WasteType::factory(),
+            'weight' => $this->faker->randomFloat(2, 1, 100),
+            'points' => $this->faker->randomFloat(2, 1, 100),
+            'image' => 'images/waste.jpg',
+            'latitude' => $this->faker->latitude,
+            'longitude' => $this->faker->longitude,
+            'status' => $this->faker->randomElement(['processing', 'picked', 'accepted']),
         ];
     }
 }

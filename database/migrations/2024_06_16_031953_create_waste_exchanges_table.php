@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up()
     {
         Schema::create('waste_exchanges', function (Blueprint $table) {
@@ -16,15 +13,21 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('recycling_center_id')->constrained()->onDelete('cascade');
             $table->foreignId('waste_type_id')->constrained()->onDelete('cascade');
-            $table->decimal('weight', 8, 2); // berat sampah dalam gram
-            $table->decimal('points', 8, 2); // poin yang diterima
+            $table->decimal('weight', 8, 2);
+            $table->decimal('points', 8, 2);
+            $table->string('image')->nullable();
+            $table->decimal('latitude', 10, 7)->nullable();
+            $table->decimal('longitude', 10, 7)->nullable();
+            $table->enum('status', [
+                \App\Enums\WasteExchangeStatus::Processing->value,
+                \App\Enums\WasteExchangeStatus::Picked->value,
+                \App\Enums\WasteExchangeStatus::Accepted->value,
+                \App\Enums\WasteExchangeStatus::Cancelled->value,
+            ])->default(\App\Enums\WasteExchangeStatus::Processing->value);
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('waste_exchanges');

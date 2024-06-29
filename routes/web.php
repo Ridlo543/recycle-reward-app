@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\WasteExchangeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +16,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('user/waste-exchange/create', [WasteExchangeController::class, 'create'])->name('filament.user.waste-exchange.create');
 });

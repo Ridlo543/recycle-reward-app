@@ -1,10 +1,11 @@
-/** @type {import('tailwindcss').Config} */
+import preset from "./vendor/filament/support/tailwind.config.preset";
+
 export default {
+    presets: [preset],
     content: [
-        "./resources/**/*.blade.php",
-        "./resources/**/*.js",
-        "./resources/**/*.vue",
-        "./vendor/filament/**/*.blade.php", // pastikan untuk memasukkan path ke vendor filament
+        "./app/Filament/**/*.php",
+        "./resources/views/**/*.blade.php",
+        "./vendor/filament/**/*.blade.php",
     ],
     theme: {
         extend: {

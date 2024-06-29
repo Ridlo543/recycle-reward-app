@@ -4,7 +4,7 @@ return [
     'auth' => [
         'guard' => 'admin',
         'pages' => [
-            'login' => \Filament\Http\Livewire\Auth\Login::class, // Pastikan ini benar
+            'login' => \Filament\Http\Livewire\Auth\Login::class,
         ],
     ],
 
@@ -94,6 +94,8 @@ return [
     */
 
     'mode' => 'global',
+    // hanya bisa admin
+    // 'mode' => 'admin',
 
     /*
     |--------------------------------------------------------------------------
