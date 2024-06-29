@@ -11,6 +11,7 @@ use App\Filament\Admin\Resources\RecyclingCenterResource;
 use App\Filament\Admin\Resources\UserResource;
 use App\Filament\Admin\Resources\WasteExchangeResource;
 use App\Filament\Admin\Resources\WasteTypeResource;
+use App\Filament\Admin\Widgets\WasteExchangeChart;
 use App\Http\Middleware\AdminMiddleware;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -28,6 +29,8 @@ use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Leandrocfe\FilamentApexCharts\FilamentApexChartsPlugin;
+use Njxqlus\FilamentProgressbar\FilamentProgressbarPlugin;
+use SolutionForest\FilamentSimpleLightBox\SimpleLightBoxPlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -40,6 +43,7 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->profile()
+            ->databaseNotifications()
             ->sidebarCollapsibleOnDesktop()
             ->colors([
                 'primary' => Color::Green,
@@ -47,17 +51,22 @@ class AdminPanelProvider extends PanelProvider
             ->discoverResources(in: app_path('Filament/Admin/Resources'), for: 'App\\Filament\\Admin\\Resources')
             ->discoverPages(in: app_path('Filament/Admin/Pages'), for: 'App\\Filament\\Admin\\Pages')
             ->pages([
+                // Pages\Dashboard::class,
                 AdminDashboard::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Admin/Widgets'), for: 'App\\Filament\\Admin\\Widgets')
             ->widgets([
                 AccountWidget::class,
+                Widgets\FilamentInfoWidget::class,
+                WasteExchangeChart::class,
                 UsersCountChart::class,
             ])
             ->plugins(
                 [
                     \Hasnayeen\Themes\ThemesPlugin::make(),
                     FilamentApexChartsPlugin::make(),
+                    FilamentProgressbarPlugin::make()->color('#38af39'),
+                    SimpleLightBoxPlugin::make(),
                 ]
             )
             ->middleware([

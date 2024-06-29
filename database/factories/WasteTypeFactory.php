@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\WasteType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -9,11 +10,8 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class WasteTypeFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
+    protected $model = WasteType::class;
+
     public function definition()
     {
         return [

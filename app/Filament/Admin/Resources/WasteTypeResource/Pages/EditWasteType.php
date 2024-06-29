@@ -6,7 +6,7 @@ use App\Filament\Admin\Resources\WasteTypeResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
-class EditWasteType extends EditRecord
+class editWasteType extends EditRecord
 {
     protected static string $resource = WasteTypeResource::class;
 

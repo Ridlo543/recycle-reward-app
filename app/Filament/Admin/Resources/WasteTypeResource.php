@@ -3,7 +3,7 @@
 namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\WasteTypeResource\Pages;
-use App\Filament\Admin\Resources\WasteTypeResource\RelationManagers;
+// use App\Filament\Admin\Resources\WasteTypeResource\RelationManagers;
 use App\Models\WasteType;
 use Filament\Forms;
 use Filament\Forms\Components\TextInput;
@@ -65,7 +65,7 @@ class WasteTypeResource extends Resource
         return [
             'index' => Pages\ListWasteTypes::route('/'),
             'create' => Pages\CreateWasteType::route('/create'),
-            'edit' => Pages\EditWasteType::route('/{record}/edit'),
+            'edit' => Pages\editWasteType::route('/{record}/edit'),
         ];
     }
 }

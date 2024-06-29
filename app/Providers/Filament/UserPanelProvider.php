@@ -2,8 +2,9 @@
 
 namespace App\Providers\Filament;
 
-use App\Filament\User\Pages\ExchangeWaste;
+use App\Filament\Admin\Resources\HistoryWasteExchangeUserResource;
 use App\Filament\User\Pages\UserDashboard;
+use App\Filament\User\Resources\HistoryWasteExchangeUserResource as ResourcesHistoryWasteExchangeUserResource;
 // use App\Filament\User\Pages\WasteExchange;
 use App\Filament\User\Widgets\ExchangeWasteButton;
 use App\Filament\User\Widgets\ExchangeWasteUserChart;
@@ -26,6 +27,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Jeffgreco13\FilamentBreezy\BreezyCore;
 use Leandrocfe\FilamentApexCharts\FilamentApexChartsPlugin;
+use Njxqlus\FilamentProgressbar\FilamentProgressbarPlugin;
+use SolutionForest\FilamentSimpleLightBox\SimpleLightBoxPlugin;
 
 class UserPanelProvider extends PanelProvider
 {
@@ -35,6 +38,7 @@ class UserPanelProvider extends PanelProvider
         return $panel
             ->id('user')
             ->path('user')
+            ->brandName('Recycle Reward App')
             ->login()
             ->registration()
             ->passwordReset()
@@ -53,12 +57,10 @@ class UserPanelProvider extends PanelProvider
             ->discoverPages(in: app_path('Filament/User/Pages'), for: 'App\\Filament\\User\\Pages')
             ->pages([
                 UserDashboard::class,
-                ExchangeWaste::class,
             ])
             ->discoverWidgets(in: app_path('Filament/User/Widgets'), for: 'App\\Filament\\User\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
-                // Widgets\FilamentInfoWidget::class,
                 ExchangeWasteUserChart::class,
                 ExchangeWasteButton::class,
             ])
@@ -66,6 +68,8 @@ class UserPanelProvider extends PanelProvider
                 \Hasnayeen\Themes\ThemesPlugin::make()
                     ->canViewThemesPage(fn () => Auth::guard('admin')->check()),
                 FilamentApexChartsPlugin::make(),
+                FilamentProgressbarPlugin::make()->color('#38af39'),
+                SimpleLightBoxPlugin::make(),
             ])
             ->middleware([
                 \Hasnayeen\Themes\Http\Middleware\SetTheme::class,

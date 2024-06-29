@@ -4,8 +4,10 @@ namespace App\Filament\Admin\Pages;
 
 use App\Filament\Admin\Widgets\AccountWidget;
 use App\Filament\Admin\Widgets\UsersCountChart;
+use App\Filament\Admin\Widgets\WasteExchangeChart;
 use Filament\Facades\Filament;
 use Filament\Pages\Page;
+use Filament\Widgets;
 use Illuminate\Contracts\Support\Htmlable;
 use Filament\Pages\Dashboard as BaseDashboard;
 
@@ -39,6 +41,8 @@ class AdminDashboard extends BaseDashboard
     {
         return [
             AccountWidget::class,
+            Widgets\FilamentInfoWidget::class,
+            WasteExchangeChart::class,
             UsersCountChart::class,
         ];
     }

@@ -2,15 +2,19 @@
 
 namespace App\Filament\Admin\Resources;
 
+use App\Enums\WasteExchangeStatus;
 use App\Filament\Admin\Resources\WasteExchangeResource\Pages;
 use App\Filament\Admin\Resources\WasteExchangeResource\RelationManagers;
 use App\Models\WasteExchange;
+use App\Models\WasteType;
 use Filament\Forms;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -42,16 +46,35 @@ class WasteExchangeResource extends Resource
                     ->relationship('recyclingCenter', 'name')
                     ->required(),
                 Select::make('waste_type_id')
-                    ->relationship('wasteType', 'name')
+                    ->label('Jenis Sampah')
+                    ->options(WasteType::all()->pluck('name', 'id')->toArray())
                     ->required(),
                 TextInput::make('weight')
                     ->required()
                     ->numeric()
                     ->reactive()
-                    ->afterStateUpdated(fn (callable $set, $state, $get) => $set('points', $state * $get('wasteType.price_per_gram'))),
+                    ->afterStateUpdated(function (callable $set, $state, $get) {
+                        $wasteType = WasteType::find($get('waste_type_id'));
+                        if ($wasteType) {
+                            $set('points', $state * $wasteType->price_per_gram);
+                        }
+                    }),
                 TextInput::make('points')
                     ->disabled()
                     ->numeric()
+                    ->required(),
+                FileUpload::make('image')
+                    ->label('Gambar')
+                    ->image(),
+                TextInput::make('latitude')
+                    ->label('Latitude')
+                    ->required(),
+                TextInput::make('longitude')
+                    ->label('Longitude')
+                    ->required(),
+                Forms\Components\ToggleButtons::make('status')
+                    ->inline()
+                    ->options(WasteExchangeStatus::class)
                     ->required(),
             ]);
     }
@@ -66,13 +89,23 @@ class WasteExchangeResource extends Resource
                 TextColumn::make('wasteType.name')->sortable()->searchable()->label('Jenis Sampah'),
                 TextColumn::make('weight')->sortable()->searchable()->label('Berat (gram)'),
                 TextColumn::make('points')->sortable()->searchable()->label('Poin'),
-                TextColumn::make('created_at')->dateTime(),
+                ImageColumn::make('image')
+                    ->label('Image')
+                    ->simpleLightbox(),
+                TextColumn::make('status')
+                    ->label('Status')
+                    ->badge(),
+                TextColumn::make('latitude')->sortable()->label('Latitude'),
+                TextColumn::make('longitude')->sortable()->label('Longitude'),
+                TextColumn::make('created_at')->dateTime()->sortable()->label('Dibuat Pada'),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

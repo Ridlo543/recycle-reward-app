@@ -44,6 +44,10 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'recycling_center' => [
+            'driver' => 'session',
+            'provider' => 'recycling_centers',
+        ],
     ],
 
 
@@ -71,6 +75,10 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
+        ],
+        'recycling_centers' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\RecyclingCenter::class,
         ],
     ],
 
