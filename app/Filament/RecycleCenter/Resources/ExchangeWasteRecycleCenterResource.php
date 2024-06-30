@@ -7,6 +7,7 @@ use App\Filament\RecycleCenter\Resources\ExchangeWasteRecycleCenterResource\Page
 use App\Filament\RecycleCenter\Resources\ExchangeWasteRecycleCenterResource\RelationManagers;
 use App\Models\ExchangeWasteRecycleCenter;
 use App\Models\WasteExchange;
+use Filament\Actions\ActionGroup;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Placeholder;
@@ -17,6 +18,7 @@ use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
+use Filament\Support\Enums\ActionSize;
 use Filament\Tables;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -24,21 +26,17 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
+use pxlrbt\FilamentExcel\Actions as FilamentExcelActions;
+use Filament\Tables\Actions\Action as FilamentTablesAction;
+use Filament\Tables\Enums\ActionsPosition;
 
 class ExchangeWasteRecycleCenterResource extends Resource
 {
     protected static ?string $model = WasteExchange::class;
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    public static function getLabel(): string
-    {
-        return 'Pertukaran Sampah';
-    }
-
-    public static function getPluralLabel(): string
-    {
-        return 'Pertukaran Sampah';
-    }
+    protected static ?string $label = 'Pertukaran Sampah';
+    protected static ?string $pluralLabel = 'Pertukaran Sampah';
 
     public static function form(Form $form): Form
     {
@@ -91,10 +89,6 @@ class ExchangeWasteRecycleCenterResource extends Resource
                     ->label('User')
                     ->sortable()
                     ->searchable(),
-                TextColumn::make('recyclingCenter.name')
-                    ->label('Recycling Center')
-                    ->sortable()
-                    ->searchable(),
                 TextColumn::make('wasteType.name')
                     ->label('Waste Type')
                     ->sortable()
@@ -118,9 +112,37 @@ class ExchangeWasteRecycleCenterResource extends Resource
             ->defaultSort('created_at', 'desc')
             ->filters([])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make()
-                    ->label('Open')
+                Tables\Actions\ActionGroup::make([
+                    FilamentTablesAction::make('goToLocation')
+                        ->label('Go to Location')
+                        ->url(fn ($record) => "https://www.google.com/maps?q={$record->latitude},{$record->longitude}")
+                        ->openUrlInNewTab()
+                        ->color('info')
+                        ->action(fn ($record) => $record->update(['status' => 'picked'])),
+                    FilamentTablesAction::make('markAsDone')
+                        ->label('Done')
+                        ->color('success')
+                        ->action(fn ($record) => $record->update(['status' => 'accepted'])),
+                    FilamentTablesAction::make('cancel')
+                        ->label('Cancel')
+                        ->color('danger')
+                        ->action(fn ($record) => $record->update(['status' => 'cancelled'])),
+                ])
+                    ->label('Actions')
+                    ->icon('heroicon-m-ellipsis-vertical')
+                    ->color('gray')
+                    ->button(),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\ViewAction::make(),
+                    Tables\Actions\EditAction::make(),
+                ])
+                    ->label('View')
+                    ->icon('heroicon-m-eye')
+                    ->size(ActionSize::Small)
+                    ->color('gray'),
+            ], position: ActionsPosition::BeforeColumns)
+            ->headerActions([
+                FilamentExcelActions\Tables\ExportAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -128,10 +150,9 @@ class ExchangeWasteRecycleCenterResource extends Resource
                 ]),
             ]);
     }
-    // list untu view
+
     public static function infolist(Infolist $infolist): Infolist
     {
-
         return $infolist
             ->schema([
                 TextEntry::make('user.name'),
@@ -145,6 +166,7 @@ class ExchangeWasteRecycleCenterResource extends Resource
                 TextEntry::make('status'),
             ]);
     }
+
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()->where('recycling_center_id', auth()->id());
@@ -155,7 +177,6 @@ class ExchangeWasteRecycleCenterResource extends Resource
         return [
             'index' => Pages\ListExchangeWasteRecycleCenters::route('/'),
             'edit' => Pages\EditExchangeWasteRecycleCenter::route('/{record}/edit'),
-            // 'view' => Pages\ViewExchangeWasteRecycleCenter::route('/{record}'),
         ];
     }
 }

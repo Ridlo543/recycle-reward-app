@@ -25,16 +25,9 @@ class ExchangeWasteUserResource extends Resource
 {
     protected static ?string $model = WasteExchange::class;
     protected static ?string $navigationIcon = 'heroicon-m-arrows-right-left';
-
-    public static function getLabel(): string
-    {
-        return 'Tukar Sampah';
-    }
-
-    public static function getPluralLabel(): string
-    {
-        return 'Tukar Sampah';
-    }
+    
+    protected static ?string $label = 'Tukar Sampah';
+    protected static ?string $pluralLabel = 'Tukar Sampah';
 
     public static function form(Form $form): Form
     {

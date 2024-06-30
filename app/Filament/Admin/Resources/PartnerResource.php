@@ -14,22 +14,15 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use pxlrbt\FilamentExcel\Actions as FilamentExcelActions;
 
 class PartnerResource extends Resource
 {
     protected static ?string $model = Partner::class;
     protected static ?string $navigationIcon = 'heroicon-o-users';
-
-    // Tambahkan label dan pluralLabel
-    public static function getLabel(): string
-    {
-        return 'Mitra';
-    }
-
-    public static function getPluralLabel(): string
-    {
-        return 'Mitra';
-    }
+    
+    protected static ?string $label = 'Mitra';
+    protected static ?string $pluralLabel = 'Mitra';
 
     public static function form(Form $form): Form
     {
@@ -58,6 +51,9 @@ class PartnerResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+            ])
+            ->headerActions([
+                FilamentExcelActions\Tables\ExportAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

@@ -19,21 +19,17 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use pxlrbt\FilamentExcel\Actions as FilamentExcelActions;
 
 class WasteExchangeResource extends Resource
 {
     protected static ?string $model = WasteExchange::class;
     protected static ?string $navigationIcon = 'heroicon-m-arrows-right-left';
+    protected static ?string $navigationGroup = 'User Management';
 
-    public static function getLabel(): string
-    {
-        return 'Pertukaran Sampah';
-    }
-
-    public static function getPluralLabel(): string
-    {
-        return 'Pertukaran Sampah';
-    }
+    
+    protected static ?string $label = 'Pertukaran Sampah';
+    protected static ?string $pluralLabel = 'Pertukaran Sampah';
 
     public static function form(Form $form): Form
     {
@@ -106,6 +102,9 @@ class WasteExchangeResource extends Resource
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\DeleteAction::make(),
+            ])
+            ->headerActions([
+                FilamentExcelActions\Tables\ExportAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

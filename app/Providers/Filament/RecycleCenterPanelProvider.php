@@ -36,7 +36,7 @@ class RecycleCenterPanelProvider extends PanelProvider
             ->profile()
             ->sidebarCollapsibleOnDesktop()
             ->databaseNotifications()
-            ->databaseNotificationsPolling('30s')
+            ->databaseNotificationsPolling('15s')
             ->discoverResources(in: app_path('Filament/RecycleCenter/Resources'), for: 'App\\Filament\\RecycleCenter\\Resources')
             ->discoverPages(in: app_path('Filament/RecycleCenter/Pages'), for: 'App\\Filament\\RecycleCenter\\Pages')
             ->pages([

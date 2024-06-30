@@ -19,6 +19,8 @@
         "leandrocfe/filament-apex-charts": "3.1",
         "livewire/livewire": "^3.5",
         "njxqlus/filament-progressbar": "^1.0",
+        "psr/simple-cache": "2.0",
+        "pxlrbt/filament-excel": "^2.3",
         "solution-forest/filament-simplelightbox": "^0.0.7",
         "spatie/laravel-permission": "^6.7"
     },
