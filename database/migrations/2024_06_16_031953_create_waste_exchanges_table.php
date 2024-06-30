@@ -15,7 +15,7 @@ return new class extends Migration
             $table->foreignId('waste_type_id')->constrained()->onDelete('cascade');
             $table->decimal('weight', 8, 2);
             $table->decimal('points', 8, 2);
-            $table->string('image')->nullable();
+            $table->string('image')->default('images/waste.jpg')->nullable();
             $table->decimal('latitude', 10, 7)->nullable();
             $table->decimal('longitude', 10, 7)->nullable();
             $table->enum('status', [

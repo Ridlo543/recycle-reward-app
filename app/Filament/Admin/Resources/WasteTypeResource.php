@@ -19,16 +19,9 @@ class WasteTypeResource extends Resource
 {
     protected static ?string $model = WasteType::class;
     protected static ?string $navigationIcon = 'heroicon-o-circle-stack';
-
-    public static function getLabel(): string
-    {
-        return 'Jenis Sampah';
-    }
-
-    public static function getPluralLabel(): string
-    {
-        return 'Jenis Sampah';
-    }
+    
+    protected static ?string $label = 'Jenis Sampah';
+    protected static ?string $pluralLabel = 'Jenis Sampah';
 
     public static function form(Form $form): Form
     {

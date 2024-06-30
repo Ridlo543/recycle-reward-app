@@ -14,23 +14,15 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use pxlrbt\FilamentExcel\Actions as FilamentExcelActions;
 
 class RecyclingCenterResource extends Resource
 {
     protected static ?string $model = RecyclingCenter::class;
     protected static ?string $navigationIcon = 'heroicon-o-building-office';
 
-
-    // Tambahkan label dan pluralLabel
-    public static function getLabel(): string
-    {
-        return 'Pusat Daur Ulang';
-    }
-
-    public static function getPluralLabel(): string
-    {
-        return 'Pusat Daur Ulang';
-    }
+    protected static ?string $label = 'Pusat Daur Ulang';
+    protected static ?string $pluralLabel = 'Pusat Daur Ulang';
 
     public static function form(Form $form): Form
     {
@@ -57,6 +49,9 @@ class RecyclingCenterResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+            ])
+            ->headerActions([
+                FilamentExcelActions\Tables\ExportAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

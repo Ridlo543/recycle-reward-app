@@ -14,12 +14,15 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Hash;
+use pxlrbt\FilamentExcel\Actions as FilamentExcelActions;
 
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-user';
+
+    protected static ?string $navigationGroup = 'User Management';
 
     public static function form(Form $form): Form
     {
@@ -32,15 +35,19 @@ class UserResource extends Resource
                     ->email()
                     ->required()
                     ->maxLength(255),
+                Forms\Components\TextInput::make('total_points')
+                    ->label('Total Poin')
+                    ->required()
+                    ->maxLength(255)
+                    ->default(fn (User $record) => $record->total_points),
                 Forms\Components\TextInput::make('password')
                     ->password()
-                    ->required()
                     ->maxLength(255)
                     ->dehydrateStateUsing(fn ($state) => Hash::make($state)),
             ]);
     }
 
-     public static function table(Table $table): Table
+    public static function table(Table $table): Table
     {
         return $table
             ->columns([
@@ -55,6 +62,9 @@ class UserResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+            ])
+            ->headerActions([
+                FilamentExcelActions\Tables\ExportAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

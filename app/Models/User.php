@@ -16,6 +16,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'points'
     ];
 
     protected $hidden = [
@@ -33,8 +34,13 @@ class User extends Authenticatable
         return $this->hasMany(WasteExchange::class);
     }
 
+    public function historyRewardUsers()
+    {
+        return $this->hasMany(HistoryRewardUser::class);
+    }
+
     public function getTotalPointsAttribute()
     {
-        return $this->wasteExchanges()->sum('points');
+        return $this->points;
     }
 }

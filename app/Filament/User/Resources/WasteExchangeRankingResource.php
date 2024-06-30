@@ -22,7 +22,6 @@ class WasteExchangeRankingResource extends Resource
     protected static ?string $model = User::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-trophy';
-
     protected static ?string $label = 'Waste Exchange Ranking';
     protected static ?string $pluralLabel = 'Waste Exchange Rankings';
 
@@ -32,11 +31,12 @@ class WasteExchangeRankingResource extends Resource
             ->columns([
                 TextColumn::make('name')
                     ->label('User Name'),
-                TextColumn::make('total_points')
+                TextColumn::make('points')
                     ->label('Points')
                     ->sortable()
+                    ->badge(),
             ])
-            ->defaultSort('total_points', 'desc')
+            ->defaultSort('points', 'desc')
             ->filters([])
             ->actions([])
             ->bulkActions([]);
@@ -45,21 +45,8 @@ class WasteExchangeRankingResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         return User::query()
-            ->select('users.id', 'users.name', DB::raw('SUM(waste_exchanges.points) as total_points'))
-            ->join('waste_exchanges', 'waste_exchanges.user_id', '=', 'users.id')
-            ->groupBy('users.id', 'users.name');
-            // ->orderBy('total_points', 'desc');
+            ->orderByDesc('points');
     }
-
-    // private static function hashName($name)
-    // {
-    //     $length = strlen($name);
-    //     if ($length <= 2) {
-    //         return $name;
-    //     }
-
-    //     return $name[0] . str_repeat('*', $length - 2) . $name[$length - 1];
-    // }
 
     public static function getPages(): array
     {

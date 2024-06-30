@@ -24,6 +24,8 @@ class DatabaseSeeder extends Seeder
             WasteTypeSeeder::class,
             RecyclingCenterSeeder::class,
             WasteExchangeSeeder::class,
+            RewardSeeder::class,
+            HistoryRewardUserSeeder::class,
         ]);
     }
 }

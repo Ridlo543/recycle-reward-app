@@ -38,6 +38,22 @@ class WasteExchange extends Model
                 }
             }
         });
+
+        static::saved(function ($model) {
+            $user = $model->user;
+
+            // save ketika status berubah menjadi accepted
+            if ($model->status == WasteExchangeStatus::Accepted && !$model->wasChanged('status')) {
+                $user->points += $model->points;
+                $user->save();
+            }
+
+            // save ketika status berubah dari accepted
+            if ($model->wasChanged('status') && $model->getOriginal('status') == WasteExchangeStatus::Accepted) {
+                $user->points -= $model->getOriginal('points');
+                $user->save();
+            }
+        });
     }
 
     public function user()
