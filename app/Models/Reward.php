@@ -16,6 +16,7 @@ class Reward extends Model
         'code',
         'points_required',
         'expires_at',
+        'partner_id',
     ];
 
     protected $dates = [
@@ -25,5 +26,10 @@ class Reward extends Model
     public function histories()
     {
         return $this->hasMany(HistoryRewardUser::class);
+    }
+
+    public function partner()
+    {
+        return $this->belongsTo(Partner::class);
     }
 }

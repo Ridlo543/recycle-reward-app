@@ -24,8 +24,8 @@ class HistoryRewardUserResource extends Resource
     protected static ?string $navigationGroup = 'User Management';
 
     
-    protected static ?string $label = 'History Tukar Reward User';
-    protected static ?string $pluralLabel = 'History TUkar Reward User';
+    protected static ?string $label = 'History Reward User';
+    protected static ?string $pluralLabel = 'History Reward User';
 
     public static function form(Form $form): Form
     {
@@ -67,6 +67,7 @@ class HistoryRewardUserResource extends Resource
                     ->searchable()
                     ->sortable(),
             ])
+            ->defaultSort('created_at', 'desc')
             ->filters([])
             ->actions([
                 Tables\Actions\ViewAction::make(),

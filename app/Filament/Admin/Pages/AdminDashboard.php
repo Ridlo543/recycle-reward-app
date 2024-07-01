@@ -3,6 +3,7 @@
 namespace App\Filament\Admin\Pages;
 
 use App\Filament\Admin\Widgets\AccountWidget;
+use App\Filament\Admin\Widgets\AdminStatsOverview;
 use App\Filament\Admin\Widgets\UsersCountChart;
 use App\Filament\Admin\Widgets\WasteExchangeChart;
 use Filament\Facades\Filament;
@@ -41,7 +42,7 @@ class AdminDashboard extends BaseDashboard
     {
         return [
             AccountWidget::class,
-            Widgets\FilamentInfoWidget::class,
+            AdminStatsOverview::class,
             WasteExchangeChart::class,
             UsersCountChart::class,
         ];
@@ -54,11 +55,7 @@ class AdminDashboard extends BaseDashboard
 
     public function getColumns(): int | string | array
     {
-        return [
-            'default' => 2,  // Mengatur dua kolom secara default
-            'md' => 2,       // Mengatur dua kolom pada ukuran medium
-            'lg' => 2,       // Mengatur dua kolom pada ukuran besar
-        ];
+        return 2;
     }
 
     public function getTitle(): string | Htmlable

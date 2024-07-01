@@ -26,6 +26,7 @@ use Illuminate\Support\Facades\Auth;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\IconColumn;
+use Illuminate\Support\Facades\DB;
 
 class RedeemRewardUserResource extends Resource
 {
@@ -59,7 +60,8 @@ class RedeemRewardUserResource extends Resource
                     TextColumn::make('name')
                         ->label('Nama')
                         ->sortable()
-                        ->weight(FontWeight::Bold)
+                        ->weight('bold')
+                        ->size(TextColumn\TextColumnSize::Large)
                         ->searchable(),
                     TextColumn::make('description')
                         ->label('Deskripsi')
@@ -67,19 +69,32 @@ class RedeemRewardUserResource extends Resource
                         ->color('gray')
                         ->searchable()
                         ->limit(130),
+                    TextColumn::make('code')
+                        ->label('Kode Redeem')
+                        ->sortable()
+                        ->searchable()
+                        ->copyable()
+                        ->copyMessage('Kode Redeem telah disalin')
+                        ->icon('heroicon-o-clipboard'),
+                    TextColumn::make('partner.name')
+                        ->label('Mitra')
+                        ->sortable()
+                        ->icon('heroicon-o-building-storefront')
+                        ->weight('bold')
+                        ->searchable(),
                     TextColumn::make('points_required')
+                        ->label('Poin Diperlukan')
                         ->badge()
                         ->color('primary')
+                        ->size(TextColumn\TextColumnSize::Large)
                         ->icon('heroicon-o-currency-dollar')
-                        ->label('Poin Diperlukan')
-                        ->extraAttributes(['class' => 'my-2'])
                         ->sortable(),
                     TextColumn::make('expires_at')
                         ->label('Kadaluarsa')
                         ->color('danger')
                         ->icon('heroicon-o-calendar')
                         ->sortable(),
-                ])
+                ])->space(2)
             ])
             ->filters([])
             ->actions([
@@ -97,7 +112,12 @@ class RedeemRewardUserResource extends Resource
                             return;
                         }
 
-                        if ($user->historyRewardUsers()->where('reward_id', $record->id)->exists()) {
+                        $hasRedeemed = DB::table('history_reward_users')
+                            ->where('user_id', $user->id)
+                            ->where('reward_id', $record->id)
+                            ->exists();
+
+                        if ($hasRedeemed) {
                             Notification::make()
                                 ->title('Reward sudah ditukarkan')
                                 ->body('Anda sudah menukarkan reward ini.')
@@ -106,13 +126,17 @@ class RedeemRewardUserResource extends Resource
                             return;
                         }
 
-                        $user->points -= $record->points_required;
-                        $user->save();
+                        DB::transaction(function () use ($user, $record) {
+                            DB::table('users')
+                                ->where('id', $user->id)
+                                ->decrement('points', $record->points_required);
 
-                        $user->historyRewardUsers()->create([
-                            'reward_id' => $record->id,
-                            'redeemed_at' => now(),
-                        ]);
+                            DB::table('history_reward_users')->insert([
+                                'user_id' => $user->id,
+                                'reward_id' => $record->id,
+                                'redeemed_at' => now(),
+                            ]);
+                        });
 
                         Notification::make()
                             ->title('Berhasil Menukarkan Reward')
@@ -124,7 +148,6 @@ class RedeemRewardUserResource extends Resource
                     ->modalHeading('Konfirmasi Penukaran Reward')
                     ->modalDescription('Apakah Anda yakin ingin menukarkan reward ini?')
                     ->modalSubmitActionLabel('Konfirmasi'),
-                // view
                 Tables\Actions\ViewAction::make()
             ]);
     }
@@ -135,11 +158,20 @@ class RedeemRewardUserResource extends Resource
             ->schema([
                 ImageEntry::make('image')
                     ->simpleLightbox(),
+                TextEntry::make('code')
+                    ->label('Kode Redeem')
+                    ->copyable()
+                    ->copyMessage('Kode Redeem telah disalin')
+                    ->icon('heroicon-o-clipboard')
+                    ->weight(FontWeight::Bold),
                 TextEntry::make('name')
                     ->label('Nama')
                     ->weight(FontWeight::Bold),
                 TextEntry::make('description')
                     ->label('Deskripsi'),
+                TextEntry::make('partner.name')
+                    ->icon('heroicon-o-building-storefront')
+                    ->label('Mitra'),
                 TextEntry::make('points_required')
                     ->label('Poin Diperlukan'),
                 TextEntry::make('expires_at')

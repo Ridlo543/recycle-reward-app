@@ -2,6 +2,8 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Admin\Widgets\AccountWidget;
+use App\Filament\RecycleCenter\Widgets\RecycleCenterStatsOverview;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -36,7 +38,7 @@ class RecycleCenterPanelProvider extends PanelProvider
             ->profile()
             ->sidebarCollapsibleOnDesktop()
             ->databaseNotifications()
-            ->databaseNotificationsPolling('15s')
+            ->databaseNotificationsPolling('5s')
             ->discoverResources(in: app_path('Filament/RecycleCenter/Resources'), for: 'App\\Filament\\RecycleCenter\\Resources')
             ->discoverPages(in: app_path('Filament/RecycleCenter/Pages'), for: 'App\\Filament\\RecycleCenter\\Pages')
             ->pages([
@@ -44,8 +46,8 @@ class RecycleCenterPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/RecycleCenter/Widgets'), for: 'App\\Filament\\RecycleCenter\\Widgets')
             ->widgets([
-                Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
+                AccountWidget::class,
+                RecycleCenterStatsOverview::class,
             ])
             ->plugins([
                 \Hasnayeen\Themes\ThemesPlugin::make()
@@ -66,7 +68,6 @@ class RecycleCenterPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
-            ->authGuard('recycling_center')
-            ->databaseNotifications();
+            ->authGuard('recycling_center');
     }
 }

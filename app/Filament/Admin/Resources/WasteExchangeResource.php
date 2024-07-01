@@ -95,6 +95,7 @@ class WasteExchangeResource extends Resource
                 TextColumn::make('longitude')->sortable()->label('Longitude'),
                 TextColumn::make('created_at')->dateTime()->sortable()->label('Dibuat Pada'),
             ])
+            ->defaultSort('created_at', 'desc')
             ->filters([
                 //
             ])
