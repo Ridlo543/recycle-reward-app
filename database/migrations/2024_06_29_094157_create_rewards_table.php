@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('code')->unique();
             $table->integer('points_required');
             $table->dateTime('expires_at');
+            $table->foreignId('partner_id')->constrained('partners')->onDelete('cascade');
             $table->timestamps();
         });
     }

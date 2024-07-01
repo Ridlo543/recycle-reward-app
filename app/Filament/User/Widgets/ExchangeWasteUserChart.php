@@ -9,25 +9,12 @@ use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 
 class ExchangeWasteUserChart extends ApexChartWidget
 {
-    /**
-     * Chart Id
-     *
-     * @var string
-     */
     protected static string $chartId = 'exchangeWasteUserChart';
-
-    /**
-     * Widget Title
-     *
-     * @var string|null
-     */
     protected static ?string $heading = 'ExchangeWasteUserChart';
-
+    protected int | string | array $columnSpan = 'full';
     /**
      * Chart options (series, labels, types, size, animations...)
      * https://apexcharts.com/docs/options
-     *
-     * @return array
      */
     protected function getOptions(): array
     {
@@ -58,7 +45,7 @@ class ExchangeWasteUserChart extends ApexChartWidget
 
         return [
             'chart' => [
-                'type' => 'bar', // Ganti dengan tipe grafik yang diinginkan
+                'type' => 'area',
                 'height' => 300,
             ],
             'series' => [

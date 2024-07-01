@@ -8,6 +8,7 @@ use App\Models\Reward;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -34,6 +35,11 @@ class RewardResource extends Resource
                 TextInput::make('description')
                     ->label('Deskripsi')
                     ->nullable(),
+                Select::make('partner_id')
+                    ->label('Mitra')
+                    ->relationship('partner', 'name')
+                    ->required()
+                    ->preload(),
                 FileUpload::make('image')
                     ->label('Gambar')
                     ->image()
@@ -62,6 +68,10 @@ class RewardResource extends Resource
                 TextColumn::make('description')
                     ->limit(50)
                     ->label('Deskripsi'),
+                TextColumn::make('partner.name')
+                    ->label('Mitra')
+                    ->searchable()
+                    ->sortable(),
                 ImageColumn::make('image')
                     ->label('Gambar')
                     ->simpleLightbox(),

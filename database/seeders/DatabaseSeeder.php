@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
             WasteExchangeSeeder::class,
             RewardSeeder::class,
             HistoryRewardUserSeeder::class,
+            ComplaintSeeder::class,
         ]);
     }
 }

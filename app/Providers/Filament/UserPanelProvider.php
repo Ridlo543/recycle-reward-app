@@ -8,6 +8,9 @@ use App\Filament\User\Resources\HistoryWasteExchangeUserResource as ResourcesHis
 // use App\Filament\User\Pages\WasteExchange;
 use App\Filament\User\Widgets\ExchangeWasteButton;
 use App\Filament\User\Widgets\ExchangeWasteUserChart;
+use App\Filament\User\Widgets\UserButton;
+use App\Filament\User\Widgets\UserStatsWidget;
+use App\Filament\User\Pages\Auth\UserRegister;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -34,23 +37,14 @@ class UserPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
-        // dd(Color::Green);
         return $panel
             ->id('user')
             ->path('user')
             ->brandName('Recycle Reward App')
             ->login()
-            ->registration()
+            ->registration(UserRegister::class)
             ->passwordReset()
             ->emailVerification()
-            // ->colors([
-            //     'danger' => Color::Red,
-            //     'gray' => Color::Zinc,
-            //     'info' => Color::Blue,
-            //     'primary' => Color::Green,
-            //     'success' => Color::Green,
-            //     'warning' => Color::Amber,
-            // ])
             ->profile()
             ->sidebarCollapsibleOnDesktop()
             ->discoverResources(in: app_path('Filament/User/Resources'), for: 'App\\Filament\\User\\Resources')
@@ -61,8 +55,9 @@ class UserPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/User/Widgets'), for: 'App\\Filament\\User\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
+                UserButton::class,
+                UserStatsWidget::class,
                 ExchangeWasteUserChart::class,
-                ExchangeWasteButton::class,
             ])
             ->plugins([
                 \Hasnayeen\Themes\ThemesPlugin::make()

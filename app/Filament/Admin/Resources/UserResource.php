@@ -6,6 +6,7 @@ use App\Filament\Admin\Resources\UserResource\Pages;
 use App\Filament\Admin\Resources\UserResource\RelationManagers;
 use App\Models\User;
 use Filament\Forms;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -28,19 +29,28 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
+                TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('email')
+                TextInput::make('email')
                     ->email()
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('total_points')
+                TextInput::make('address')
+                    ->required()
+                    ->maxLength(255),
+                TextInput::make('contact')
+                    ->required()
+                    // regexx dengan diawali 08
+                    ->tel()
+                    ->telRegex('/^08[0-9]{9,}$/')
+                    ->maxLength(15),
+                TextInput::make('total_points')
                     ->label('Total Poin')
                     ->required()
                     ->maxLength(255)
                     ->default(fn (User $record) => $record->total_points),
-                Forms\Components\TextInput::make('password')
+                TextInput::make('password')
                     ->password()
                     ->maxLength(255)
                     ->dehydrateStateUsing(fn ($state) => Hash::make($state)),
@@ -52,11 +62,14 @@ class UserResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('id')->sortable(),
-                TextColumn::make('name')->sortable()->searchable(),
-                TextColumn::make('email')->sortable()->searchable(),
+                TextColumn::make('name')->sortable()->searchable()->label('Nama'),
+                TextColumn::make('email')->sortable()->searchable()->label('Email'),
+                TextColumn::make('address')->sortable()->searchable()->label('Alamat'),
+                TextColumn::make('contact')->sortable()->searchable()->label('Kontak'),
                 TextColumn::make('total_points')->label('Total Poin')->getStateUsing(fn (User $record) => $record->total_points),
                 TextColumn::make('created_at')->dateTime(),
             ])
+            ->defaultSort('created_at', 'desc')
             ->filters([
                 //
             ])

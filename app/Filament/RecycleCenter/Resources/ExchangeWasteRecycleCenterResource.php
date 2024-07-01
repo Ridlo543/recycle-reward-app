@@ -85,6 +85,9 @@ class ExchangeWasteRecycleCenterResource extends Resource
     {
         return $table
             ->columns([
+                ImageColumn::make('image')
+                    ->label('Image')
+                    ->simpleLightbox(),
                 TextColumn::make('user.name')
                     ->label('User')
                     ->sortable()
@@ -99,9 +102,6 @@ class ExchangeWasteRecycleCenterResource extends Resource
                 TextColumn::make('points')
                     ->label('Points')
                     ->sortable(),
-                ImageColumn::make('image')
-                    ->label('Image')
-                    ->simpleLightbox(),
                 TextColumn::make('status')
                     ->label('Status')
                     ->badge(),
@@ -113,12 +113,15 @@ class ExchangeWasteRecycleCenterResource extends Resource
             ->filters([])
             ->actions([
                 Tables\Actions\ActionGroup::make([
+                    FilamentTablesAction::make('markAsPicked')
+                        ->label('Mark as Picked')
+                        ->action(fn ($record) => $record->update(['status' => 'picked']))
+                        ->color('info'),
                     FilamentTablesAction::make('goToLocation')
                         ->label('Go to Location')
                         ->url(fn ($record) => "https://www.google.com/maps?q={$record->latitude},{$record->longitude}")
                         ->openUrlInNewTab()
-                        ->color('info')
-                        ->action(fn ($record) => $record->update(['status' => 'picked'])),
+                        ->color('info'),
                     FilamentTablesAction::make('markAsDone')
                         ->label('Done')
                         ->color('success')

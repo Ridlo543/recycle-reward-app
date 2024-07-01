@@ -8,25 +8,14 @@ use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 
 class WasteExchangeChart extends ApexChartWidget
 {
-    /**
-     * Chart Id
-     *
-     * @var string
-     */
     protected static string $chartId = 'wasteExchangeChart';
 
-    /**
-     * Widget Title
-     *
-     * @var string|null
-     */
     protected static ?string $heading = 'Waste Exchange History';
 
     /**
      * Chart options (series, labels, types, size, animations...)
      * https://apexcharts.com/docs/options
      *
-     * @return array
      */
     protected function getOptions(): array
     {
@@ -44,7 +33,7 @@ class WasteExchangeChart extends ApexChartWidget
 
         return [
             'chart' => [
-                'type' => 'line',
+                'type' => 'area',
                 'height' => 300,
             ],
             'series' => [
