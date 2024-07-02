@@ -23,7 +23,7 @@ class Reward extends Model
         'expires_at',
     ];
 
-    public function histories()
+    public function historyRewardUsers()
     {
         return $this->hasMany(HistoryRewardUser::class);
     }

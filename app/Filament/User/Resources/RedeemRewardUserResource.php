@@ -75,7 +75,16 @@ class RedeemRewardUserResource extends Resource
                         ->searchable()
                         ->copyable()
                         ->copyMessage('Kode Redeem telah disalin')
-                        ->icon('heroicon-o-clipboard'),
+                        ->icon('heroicon-o-clipboard')
+                        ->getStateUsing(function ($record) {
+                            // Cek apakah user sudah menukarkan reward ini
+                            $hasRedeemed = DB::table('history_reward_users')
+                                ->where('user_id', Auth::id())
+                                ->where('reward_id', $record->id)
+                                ->exists();
+
+                            return $hasRedeemed ? $record->code : 'Tukar untuk melihat kode';
+                        }),
                     TextColumn::make('partner.name')
                         ->label('Mitra')
                         ->sortable()
@@ -163,7 +172,16 @@ class RedeemRewardUserResource extends Resource
                     ->copyable()
                     ->copyMessage('Kode Redeem telah disalin')
                     ->icon('heroicon-o-clipboard')
-                    ->weight(FontWeight::Bold),
+                    ->weight(FontWeight::Bold)
+                    ->getStateUsing(function ($record) {
+                        // Cek apakah user sudah menukarkan reward ini
+                        $hasRedeemed = DB::table('history_reward_users')
+                            ->where('user_id', Auth::id())
+                            ->where('reward_id', $record->id)
+                            ->exists();
+
+                        return $hasRedeemed ? $record->code : 'Tukar untuk melihat kode';
+                    }),
                 TextEntry::make('name')
                     ->label('Nama')
                     ->weight(FontWeight::Bold),
