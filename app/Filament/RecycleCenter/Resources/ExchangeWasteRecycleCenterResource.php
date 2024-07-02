@@ -172,7 +172,10 @@ class ExchangeWasteRecycleCenterResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->where('recycling_center_id', auth()->id());
+        $recyclingCenterId = Auth::guard('recycling_center')->id();
+
+        return parent::getEloquentQuery()
+            ->where('recycling_center_id', $recyclingCenterId);
     }
 
     public static function getPages(): array

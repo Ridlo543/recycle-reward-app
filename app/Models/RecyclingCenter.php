@@ -35,5 +35,4 @@ class RecyclingCenter extends Authenticatable
     {
         return $this->hasMany(WasteExchange::class);
     }
-    
 }
