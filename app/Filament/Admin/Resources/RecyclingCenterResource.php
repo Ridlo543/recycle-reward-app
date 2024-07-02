@@ -5,6 +5,7 @@ namespace App\Filament\Admin\Resources;
 use App\Filament\Admin\Resources\RecyclingCenterResource\Pages;
 use App\Filament\Admin\Resources\RecyclingCenterResource\RelationManagers;
 use App\Models\RecyclingCenter;
+use Faker\Provider\ar_EG\Text;
 use Filament\Forms;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -28,9 +29,12 @@ class RecyclingCenterResource extends Resource
     {
         return $form
             ->schema([
+
                 TextInput::make('name')->required(),
                 TextInput::make('address')->required(),
                 TextInput::make('contact')->required(),
+                TextInput::make('email')->required()->email(),
+                TextInput::make('password')->required()->password()->revealable(),
             ]);
     }
 
@@ -42,8 +46,10 @@ class RecyclingCenterResource extends Resource
                 TextColumn::make('name')->sortable()->searchable(),
                 TextColumn::make('address')->sortable()->searchable(),
                 TextColumn::make('contact')->sortable()->searchable(),
+                TextColumn::make('email')->sortable()->searchable(),
                 TextColumn::make('created_at')->dateTime(),
             ])
+            ->defaultSort('created_at', 'desc')
             ->filters([
                 //
             ])

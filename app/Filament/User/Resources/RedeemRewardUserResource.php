@@ -105,6 +105,7 @@ class RedeemRewardUserResource extends Resource
                         ->sortable(),
                 ])->space(2)
             ])
+            ->defaultSort('created_at', 'desc')
             ->filters([])
             ->actions([
                 Action::make('redeem')

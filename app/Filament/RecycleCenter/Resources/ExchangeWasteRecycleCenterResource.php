@@ -115,7 +115,10 @@ class ExchangeWasteRecycleCenterResource extends Resource
                 Tables\Actions\ActionGroup::make([
                     FilamentTablesAction::make('markAsPicked')
                         ->label('Mark as Picked')
-                        ->action(fn ($record) => $record->update(['status' => 'picked']))
+                        ->action(function ($record) {
+                            $record->status = WasteExchangeStatus::Picked;
+                            $record->save();
+                        })
                         ->color('info'),
                     FilamentTablesAction::make('goToLocation')
                         ->label('Go to Location')
@@ -125,11 +128,17 @@ class ExchangeWasteRecycleCenterResource extends Resource
                     FilamentTablesAction::make('markAsDone')
                         ->label('Done')
                         ->color('success')
-                        ->action(fn ($record) => $record->update(['status' => 'accepted'])),
+                        ->action(function ($record) {
+                            $record->status = WasteExchangeStatus::Accepted;
+                            $record->save();
+                        }),
                     FilamentTablesAction::make('cancel')
                         ->label('Cancel')
                         ->color('danger')
-                        ->action(fn ($record) => $record->update(['status' => 'cancelled'])),
+                        ->action(function ($record) {
+                            $record->status = WasteExchangeStatus::Cancelled;
+                            $record->save();
+                        }),
                 ])
                     ->label('Actions')
                     ->icon('heroicon-m-ellipsis-vertical')

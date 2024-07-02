@@ -42,13 +42,13 @@ class WasteExchange extends Model
         static::saved(function ($model) {
             $user = $model->user;
 
-            // save ketika status berubah menjadi accepted
-            if ($model->status == WasteExchangeStatus::Accepted && !$model->wasChanged('status')) {
+            // Tambah poin ketika status berubah menjadi accepted
+            if ($model->wasChanged('status') && $model->status == WasteExchangeStatus::Accepted) {
                 $user->points += $model->points;
                 $user->save();
             }
 
-            // save ketika status berubah dari accepted
+            // Kurangi poin ketika status berubah dari accepted
             if ($model->wasChanged('status') && $model->getOriginal('status') == WasteExchangeStatus::Accepted) {
                 $user->points -= $model->getOriginal('points');
                 $user->save();

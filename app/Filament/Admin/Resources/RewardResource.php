@@ -49,6 +49,10 @@ class RewardResource extends Resource
                     ->required()
                     ->unique()
                     ->label('Kode Redeem'),
+                TextInput::make('points_required')
+                    ->required()
+                    ->numeric()
+                    ->label('Poin'),
                 DatePicker::make('expires_at')
                     ->required()
                     ->label('Tenggat Tanggal'),
@@ -81,6 +85,7 @@ class RewardResource extends Resource
                     ->label('Tenggat Tanggal')
                     ->date(),
             ])
+            ->defaultSort('created_at', 'desc')
             ->filters([
                 //
             ])

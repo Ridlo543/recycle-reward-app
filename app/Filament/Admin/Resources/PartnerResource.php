@@ -46,6 +46,7 @@ class PartnerResource extends Resource
                 TextColumn::make('address')->sortable()->searchable(),
                 TextColumn::make('created_at')->dateTime(),
             ])
+            ->defaultSort('created_at', 'desc')
             ->filters([
                 //
             ])
