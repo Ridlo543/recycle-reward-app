@@ -8,6 +8,8 @@ use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Resources\Pages\CreateRecord;
+use Filament\Resources\Pages\EditRecord;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
@@ -45,17 +47,19 @@ class UserResource extends Resource
                     ->tel()
                     ->telRegex('/^08[0-9]{9,}$/')
                     ->maxLength(15),
-                TextInput::make('total_points')
+                TextInput::make('points')
                     ->label('Total Poin')
                     ->required()
-                    ->maxLength(255)
-                    ->default(fn (User $record) => $record->total_points),
+                    ->maxLength(255),
                 TextInput::make('password')
                     ->password()
                     ->maxLength(255)
-                    ->dehydrateStateUsing(fn ($state) => Hash::make($state)),
+                    ->dehydrateStateUsing(fn ($state) => !empty($state) ? Hash::make($state) : null)
+                    ->required(fn ($livewire) => $livewire instanceof CreateRecord)  // Make required on create
+                    ->label(fn ($livewire) => $livewire instanceof EditRecord ? 'New Password (leave empty to keep current password)' : 'Password')
             ]);
     }
+
 
     public static function table(Table $table): Table
     {
@@ -64,9 +68,9 @@ class UserResource extends Resource
                 TextColumn::make('id')->sortable(),
                 TextColumn::make('name')->sortable()->searchable()->label('Nama'),
                 TextColumn::make('email')->sortable()->searchable()->label('Email'),
-                TextColumn::make('address')->sortable()->searchable()->label('Alamat'),
+                TextColumn::make('address')->sortable()->searchable()->label('Alamat')->limit(50),
                 TextColumn::make('contact')->sortable()->searchable()->label('Kontak'),
-                TextColumn::make('total_points')->label('Total Poin')->getStateUsing(fn (User $record) => $record->total_points),
+                TextColumn::make('points')->label('Total Poin'),
                 TextColumn::make('created_at')->dateTime(),
             ])
             ->defaultSort('created_at', 'desc')
@@ -74,6 +78,7 @@ class UserResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->headerActions([
