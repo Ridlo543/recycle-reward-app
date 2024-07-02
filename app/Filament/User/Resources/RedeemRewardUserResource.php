@@ -56,7 +56,8 @@ class RedeemRewardUserResource extends Resource
                         ->width('100%')
                         ->size(100)
                         ->simpleLightbox()
-                        ->alignment(Alignment::Center),
+                        ->alignment(Alignment::Center)
+                        ->defaultImageUrl(url('/images/reward.jpg')),
                     TextColumn::make('name')
                         ->label('Nama')
                         ->sortable()
