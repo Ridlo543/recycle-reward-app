@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Admin\Resources\HistoryWasteExchangeUserResource;
+use App\Filament\User\Pages\Auth\EditProfile;
 use App\Filament\User\Pages\UserDashboard;
 use App\Filament\User\Resources\HistoryWasteExchangeUserResource as ResourcesHistoryWasteExchangeUserResource;
 // use App\Filament\User\Pages\WasteExchange;
@@ -45,7 +46,7 @@ class UserPanelProvider extends PanelProvider
             ->registration(UserRegister::class)
             ->passwordReset()
             ->emailVerification()
-            ->profile()
+            ->profile(EditProfile::class)
             ->sidebarCollapsibleOnDesktop()
             ->discoverResources(in: app_path('Filament/User/Resources'), for: 'App\\Filament\\User\\Resources')
             ->discoverPages(in: app_path('Filament/User/Pages'), for: 'App\\Filament\\User\\Pages')
