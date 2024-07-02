@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\WasteExchangeController;
+use App\Http\Controllers\ComplaintController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,8 +15,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('landing_page.landing_page');
 });
+Route::get('/pengaduan', [ComplaintController::class, 'create'])->name('pengaduan.create');
+Route::post('/pengaduan', [ComplaintController::class, 'store'])->name('pengaduan.store');
+
 
 // Route::middleware(['auth'])->group(function () {
 //     Route::get('user/waste-exchange/create', [WasteExchangeController::class, 'create'])->name('filament.user.waste-exchange.create');
