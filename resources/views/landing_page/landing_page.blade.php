@@ -54,7 +54,7 @@
                         <li class="nav-item">
                             <a class="nav-link page-scroll" href="#contact">Mitra</a>
                         <li class="nav-item">
-                            <a class="nav-link page-scroll" href="{{ route('pengaduan.create') }}">pengaduan</a>
+                            <a class="nav-link page-scroll" href="{{ route('pengaduan.create') }}">Pengaduan</a>
                         </li>
                         <li class="nav-item">
                             <a class="btn btn-signin" href="{{ route('filament.user.auth.login') }}">Sign In</a>
