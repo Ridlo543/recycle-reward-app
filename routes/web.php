@@ -18,6 +18,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::middleware(['auth'])->group(function () {
-    Route::get('user/waste-exchange/create', [WasteExchangeController::class, 'create'])->name('filament.user.waste-exchange.create');
-});
+// Route::middleware(['auth'])->group(function () {
+//     Route::get('user/waste-exchange/create', [WasteExchangeController::class, 'create'])->name('filament.user.waste-exchange.create');
+// });
