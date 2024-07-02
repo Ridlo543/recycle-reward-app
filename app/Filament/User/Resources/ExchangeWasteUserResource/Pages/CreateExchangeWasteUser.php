@@ -52,7 +52,7 @@ class CreateExchangeWasteUser extends CreateRecord
         $recyclingCenter = $this->record->recyclingCenter;
         Notification::make()
             ->title('Pengguna baru saja menukar sampah')
-            ->body('Pengguna telah menukar sampah dengan rincian yang ditentukan.')
+            ->body('Pengguna ' . $this->record->user->name . 'telah menukar sampah dengan rincian yang ditentukan.')
             ->sendToDatabase($recyclingCenter);
         event(new DatabaseNotificationsSent($recyclingCenter));
     }
