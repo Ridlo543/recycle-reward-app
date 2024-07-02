@@ -23,7 +23,6 @@ class HistoryRewardUserResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationGroup = 'User Management';
 
-    
     protected static ?string $label = 'History Reward User';
     protected static ?string $pluralLabel = 'History Reward User';
 
@@ -38,7 +37,6 @@ class HistoryRewardUserResource extends Resource
                     ->disabled()
                     ->required(),
                 DateTimePicker::make('redeemed_at')
-                    ->label('Redeemed At')
                     ->required(),
             ]);
     }
@@ -47,28 +45,19 @@ class HistoryRewardUserResource extends Resource
     {
         return $table
             ->columns([
-
                 TextColumn::make('user_id')
-                    ->searchable()
-                    ->sortable(),
-                TextColumn::make('user_name')
-                    ->label('User')
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('reward_id')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('reward_name')
-                    ->label('Reward')
-                    ->searchable()
-                    ->sortable(),
                 TextColumn::make('redeemed_at')
-                    ->label('Redeemed At')
                     ->searchable()
                     ->sortable(),
             ])
-            ->defaultSort('created_at', 'desc')
-            ->filters([])
+            ->filters([
+                //
+            ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
@@ -83,12 +72,11 @@ class HistoryRewardUserResource extends Resource
             ]);
     }
 
-    public static function getEloquentQuery(): Builder
+    public static function getRelations(): array
     {
-        return HistoryRewardUser::query()
-            ->select('history_reward_users.*', 'users.name as user_name', 'rewards.name as reward_name')
-            ->leftJoin('users', 'history_reward_users.user_id', '=', 'users.id')
-            ->leftJoin('rewards', 'history_reward_users.reward_id', '=', 'rewards.id');
+        return [
+            //
+        ];
     }
 
     public static function getPages(): array
