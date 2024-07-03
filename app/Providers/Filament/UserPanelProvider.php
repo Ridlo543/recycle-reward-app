@@ -46,6 +46,7 @@ class UserPanelProvider extends PanelProvider
             ->registration(UserRegister::class)
             ->passwordReset()
             ->emailVerification()
+            ->favicon(asset('slick/img/logoRR.png'))
             ->profile(EditProfile::class)
             ->sidebarCollapsibleOnDesktop()
             ->discoverResources(in: app_path('Filament/User/Resources'), for: 'App\\Filament\\User\\Resources')

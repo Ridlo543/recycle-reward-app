@@ -45,6 +45,7 @@ class AdminPanelProvider extends PanelProvider
             ->profile()
             ->databaseNotifications()
             ->databaseNotificationsPolling('5s')
+            ->favicon(asset('slick/img/logoRR.png'))
             ->sidebarCollapsibleOnDesktop()
             ->colors([
                 'primary' => Color::Green,

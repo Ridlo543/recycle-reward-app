@@ -38,6 +38,7 @@ class RecycleCenterPanelProvider extends PanelProvider
             ->profile()
             ->sidebarCollapsibleOnDesktop()
             ->databaseNotifications()
+            ->favicon(asset('slick/img/logoRR.png'))
             ->databaseNotificationsPolling('5s')
             ->discoverResources(in: app_path('Filament/RecycleCenter/Resources'), for: 'App\\Filament\\RecycleCenter\\Resources')
             ->discoverPages(in: app_path('Filament/RecycleCenter/Pages'), for: 'App\\Filament\\RecycleCenter\\Pages')
